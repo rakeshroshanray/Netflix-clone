@@ -1,19 +1,18 @@
+// import express from 'express';
 import express from 'express';
-import authRoutes from './router/auth.router.js'
-import { Config } from './config/envVars.js';
-import dotenv from "dotenv"
+import dotenv from 'dotenv';
+import { connectDB } from './config/db.js';
+import { ENV_VARS } from './config/envVars.js'
 
-dotenv.config()
+dotenv.config();
+
 const app = express();
 
-const port =process.env.PORT || 8000
-
-
-app.use('/api/v1/auth', authRoutes);
-
-    console.log(process.env.PORT)
-app.listen(port,()=>{
-    console.log("xcvbnm,.;'")
+const PORT = ENV_VARS.PORT
+    
+app.listen(PORT,()=>{
+    console.log("server running at http://localhost:"+PORT)
+    connectDB();
 });
 
 //TttOIdwDHXv2R39s

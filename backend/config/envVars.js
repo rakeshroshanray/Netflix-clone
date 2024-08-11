@@ -2,9 +2,9 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-console.log(process.env.PORT)
+//console.log(process.env.PORT)
 
-export const Config = {
+export const ENV_VARS = {
 
     MONGO_URI : process.env.MONGO_URI,
     
