@@ -1,5 +1,6 @@
 import { User } from "../model/user.model.js"
-
+import bcryptjs from 'bcryptjs'
+import { generateTokenAndSetCookie } from "../utils/generateToken.js";
 export async function signup(req,res){
     try{
         const {email,password,username} = req.body;
@@ -27,18 +28,22 @@ export async function signup(req,res){
             res.status(400).json({success : false, message : "User with Username already exist"})
         }
         
+        const salt = await bcryptjs.genSalt(10);
+        const hashedPassword = await bcryptjs.hash(password,salt);
         const PROFILE_PICS = ["/avatar1.png","/avatar2.png","/avatar3.png"]
         const image = PROFILE_PICS[Math.floor(Math.random()*PROFILE_PICS.length)]
 
         const newUser = new User({
             username,
             email,
-            password,
+            password: hashedPassword,
             image
            
         })
 
+        generateTokenAndSetCookie(newUser._id,res)
         await newUser.save()
+
         res.status(201).json({
             success : true,
             user: {
@@ -50,6 +55,7 @@ export async function signup(req,res){
     
     }
     catch (error){
+        console.log("Error in login controller", error.message);
         res.status(500).json({ success: false , message : "Internal Server Error"})
     }
 }
@@ -59,5 +65,13 @@ export async function login(req,res){
 }
 
 export async function logout(req,res){
-    res.send("logout Routes")
+   try{
+    res.clearCookie("jwt-netflix");
+    res.status(200).json({success : true, mesasage: "Loged out successfully"})
+
+   }
+   catch(error){
+    console.log("Error in logout controller", error.message);
+    res.status(500).json({ success: false , message : "Internal Server Error"})
+   }
 }
