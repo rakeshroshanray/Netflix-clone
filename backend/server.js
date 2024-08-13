@@ -3,11 +3,14 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { connectDB } from './config/db.js';
 import { ENV_VARS } from './config/envVars.js'
+import router from './router/auth.router.js'
 
 dotenv.config();
 
 const app = express();
 
+app.use(express.json()); // will allow to parse the req body.
+app.use("api/v1/auth", router)
 const PORT = ENV_VARS.PORT
     
 app.listen(PORT,()=>{
