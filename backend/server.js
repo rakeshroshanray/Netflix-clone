@@ -5,6 +5,7 @@ import { connectDB } from './config/db.js';
 import { ENV_VARS } from './config/envVars.js'
 import authRoutes from './router/auth.router.js'
 import movieRoutes from './router/movie.router.js'
+import tvRoutes from './router/tv.router.js'
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ app.use(express.json()); // will allow to parse the req body.
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/movie", movieRoutes);
+app.use("/api/v1/tv", tvRoutes);
 const PORT = ENV_VARS.PORT
     
 app.listen(PORT,()=>{
