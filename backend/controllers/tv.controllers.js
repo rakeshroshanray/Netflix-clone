@@ -25,9 +25,7 @@ export async function getTvTrailers(req,res){
             return res.status(404).send(error.message)
         }
         res.status(500).json({ success: false , message : "Internal Server Error"})
-
     }
-
 }
 
 export async function getTvDetails(req,res){
@@ -42,7 +40,6 @@ export async function getTvDetails(req,res){
             return res.status(404).send(error.message)
         }
         res.status(500).json({ success: false , message : "Internal Server Error"})
-
     }
 }
 
