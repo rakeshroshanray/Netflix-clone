@@ -2,7 +2,7 @@
 import { createBrowserRouter,RouterProvider } from "react-router-dom"
 import SignUpPage from "./pages/SignUpPage"
 import LoginPage from "./pages/LoginPage"
-import HomePage from "./pages/HomePage"
+import HomePage from "./pages/home/HomePage"
 import { Home } from "lucide-react"
 
 let route = createBrowserRouter([
