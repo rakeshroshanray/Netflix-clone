@@ -4,6 +4,7 @@ import SignUpPage from "./pages/SignUpPage"
 import LoginPage from "./pages/LoginPage"
 import HomePage from "./pages/home/HomePage"
 import { Home } from "lucide-react"
+import { Toaster } from "react-hot-toast"
 
 let route = createBrowserRouter([
   {path:'/', element:<HomePage/>},
@@ -14,7 +15,11 @@ let route = createBrowserRouter([
 function App() {
   
   return (
-   <RouterProvider router={route}/>
+    <>
+      <RouterProvider router={route} />
+      <Toaster />
+    </>
+   
   )
 }
 
