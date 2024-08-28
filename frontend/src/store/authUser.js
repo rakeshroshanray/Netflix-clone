@@ -8,10 +8,11 @@ export const useAuthStore = create((set) => ({
 	isCheckingAuth: true,
 	isLoggingOut: false,
 	isLoggingIn: false,
-	signup: async (credentials) => {
+	signup:async (credentials) => {
 		set({ isSigningUp: true });
 		try {
-			const response = await axios.post("http://localhost:5000/api/v1/auth/signup", credentials);
+			console.log("/api/v1/auth/signup")
+			const response = await axios.post("/api/v1/auth/signup", credentials);
 			set({ user: response.data.user, isSigningUp: false });
 			toast.success("Account created successfully");
 		} catch (error) {

@@ -11,6 +11,7 @@ const LoginPage = () => {
     e.preventDefault();
     console.log(email, password)
   }
+  
   return (
     <div className='h-screen w-full hero-bg'>
       <header className='max-w-6xl mx-auto flex items-center justify-between p-4'>

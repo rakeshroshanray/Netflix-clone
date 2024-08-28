@@ -8,15 +8,16 @@ import tvRoutes from './router/tv.router.js'
 import {protectRoute} from './middlewares/protectRoute.js'
 import cookieParser from "cookie-parser";
 import searchRoutes from './router/search.router.js'
+import cors from 'cors';
 
 dotenv.config();
 
 const app = express();
-
+app.use(cors());
 app.use(express.json()); // will allow to parse the req body.
 app.use(cookieParser()); 
 
-app.use("/api/v1/auth",protectRoute, authRoutes);
+app.use("/api/v1/auth",authRoutes);
 app.use("/api/v1/movie",protectRoute, movieRoutes);
 app.use("/api/v1/tv",protectRoute, tvRoutes);
 app.use("/api/v1/search",protectRoute, searchRoutes);
