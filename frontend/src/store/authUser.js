@@ -8,10 +8,9 @@ export const useAuthStore = create((set) => ({
 	isCheckingAuth: true,
 	isLoggingOut: false,
 	isLoggingIn: false,
-	signup:async (credentials) => {
+	signup: async (credentials) => {
 		set({ isSigningUp: true });
 		try {
-			console.log("/api/v1/auth/signup")
 			const response = await axios.post("/api/v1/auth/signup", credentials);
 			set({ user: response.data.user, isSigningUp: false });
 			toast.success("Account created successfully");
@@ -23,8 +22,7 @@ export const useAuthStore = create((set) => ({
 	login: async (credentials) => {
 		set({ isLoggingIn: true });
 		try {
-            console.log("frontend")
-			const response = await axios.post("http://localhost:5000/api/v1/auth/login", credentials);
+			const response = await axios.post("/api/v1/auth/login", credentials);
 			set({ user: response.data.user, isLoggingIn: false });
 		} catch (error) {
 			set({ isLoggingIn: false, user: null });
@@ -46,9 +44,10 @@ export const useAuthStore = create((set) => ({
 		set({ isCheckingAuth: true });
 		try {
 			const response = await axios.get("/api/v1/auth/authCheck");
-
 			set({ user: response.data.user, isCheckingAuth: false });
+
 		} catch (error) {
+			//console.error("Auth check failed:", error);
 			set({ isCheckingAuth: false, user: null });
 			// toast.error(error.response.data.message || "An error occurred");
 		}
