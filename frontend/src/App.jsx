@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom"
 import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/home/HomePage";
+import WatchPage from "./pages/WatchPage";
 import { Toaster } from "react-hot-toast";
 import { useAuthStore } from "./store/authUser";
 import { useEffect } from "react";
@@ -12,6 +13,7 @@ const createRoutes = (user) => [
   { path: '/', element: <HomePage /> },
   { path: '/login', element: user ? <Navigate to="/" /> : <LoginPage /> },
   { path: '/signup', element: user ? <Navigate to="/" /> : <SignUpPage /> },
+  { path: '/watch/:id', element: user ? <WatchPage /> : <Navigate to="/login" /> },
 ];
 
 function App() {
