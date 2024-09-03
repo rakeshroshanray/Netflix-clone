@@ -21,7 +21,7 @@ const Navbar = () => {
 				</Link>
 
 				{/* desktop navbar items */}
-				<div className='hidden sm:flex gap-2 items-center'>
+				<div className='hidden sm:flex gap-4 items-center font-medium'>
 					<Link to='/' className='hover:underline'onClick={() => setContentType("movie")}>
 						Movies
 					</Link>
@@ -34,7 +34,7 @@ const Navbar = () => {
 				</div>
 			</div>
 
-			<div className='flex gap-2 items-center z-50'>
+			<div className='flex gap-8 items-center z-50'>
 				<Link to={"/search"}>
 					<Search className='size-6 cursor-pointer' />
 				</Link>
