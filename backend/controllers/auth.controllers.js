@@ -1,6 +1,9 @@
 import { User } from "../model/user.model.js"
 import bcryptjs from 'bcryptjs'
 import { generateTokenAndSetCookie } from "../utils/generateToken.js";
+import nodemailer from 'nodemailer';
+ import jwt from 'jsonwebtoken';
+
 export async function signup(req,res){
     try{
         const {email,password,username} = req.body;
@@ -115,4 +118,69 @@ export async function authCheck(req, res) {
 		console.log("Error in authCheck controller", error.message);
 		res.status(500).json({ success: false, message: "Internal server error" });
 	}
+}
+
+/// Forgot Password function
+export async function forgotPassword(req, res) {
+    try {
+        const { email } = req.body;
+        if (!email) {
+            return res.status(400).json({ success: false, message: "Email is required" });
+        }
+
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User with this email does not exist" });
+        }
+
+        const resetToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS,
+            },
+            secure: true, // true for 465, false for other ports
+        });
+
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: user.email,
+            subject: 'Password Reset Link',
+            text: `Click the link to reset your password: ${process.env.CLIENT_URL}/reset-password/${resetToken}`,
+        };
+
+        await transporter.sendMail(mailOptions);
+
+        res.status(200).json({ success: true, message: "Password reset link sent successfully" });
+
+    } catch (error) {
+        console.error("Error in forgotPassword controller", error.message);
+        res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+}
+
+// Reset Password function
+export async function resetPassword(req, res) {
+    try {
+        const { password } = req.body;
+        const { token } = req.params;
+
+        if (!password || password.length < 6) {
+            return res.status(400).json({ success: false, message: "Password length must be at least 6" });
+        }
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const salt = await bcryptjs.genSalt(10);
+        const hashedPassword = await bcryptjs.hash(password, salt);
+
+        await User.findByIdAndUpdate(decoded.id, { password: hashedPassword });
+
+        res.status(200).json({ success: true, message: "Password reset successful" });
+
+    } catch (error) {
+        console.error("Error in resetPassword controller", error.message);
+        res.status(400).json({ success: false, message: "Invalid or expired token" });
+    }
 }
