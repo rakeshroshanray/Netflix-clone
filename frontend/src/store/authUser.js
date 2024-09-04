@@ -8,6 +8,8 @@ export const useAuthStore = create((set) => ({
 	isCheckingAuth: true,
 	isLoggingOut: false,
 	isLoggingIn: false,
+	isSendingResetLink: false,
+	
 	signup: async (credentials) => {
 		set({ isSigningUp: true });
 		try {
@@ -51,4 +53,15 @@ export const useAuthStore = create((set) => ({
 			// toast.error(error.response.data.message || "An error occurred");
 		}
 	},
+	forgotPassword: async ({ email }) => {  // New forgotPassword function
+        set({ isSendingResetLink: true });
+        try {
+            const response = await axios.post("/api/v1/auth/forgot-password", { email });
+            toast.success(response.data.message || "Reset link sent to your email");
+            set({ isSendingResetLink: false });
+        } catch (error) {
+            toast.error(error.response.data.message || "Failed to send reset link");
+            set({ isSendingResetLink: false });
+        }
+    },
 }));
