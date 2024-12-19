@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target:  "http://localhost:5000/api",
+        target:  "https://netflix-clone-2-ad78.onrender.com/api",
         changeOrigin: true,
         rewrite: (path) => {
           console.log(`Proxying request: ${path}`);
